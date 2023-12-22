@@ -1,4 +1,4 @@
-#KOI(Korean Olympiad in Informatics) elementary 2nd problem
+# KOI(Korean Olympiad in Informatics) elementary 2nd problem
 
 |소스 코드|문제 수준|문제 제목|시도 횟수|언어|날짜|설명|
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
