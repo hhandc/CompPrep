@@ -3,43 +3,45 @@
 
 using namespace std;
 
-vector<vector<int> > connect;
-vector<vector<int> > back;
-vector<vector<int> > check;
+int n, m;
+vector<vector<int> > bigger;
+vector<vector<int > > smaller;
+vector<vector<int> >  check;
 
-void bsearch(int x, int carr) {
-    for(int i = 0;i<back[x].size();i++) {
-        check[carr][back[x][i]] = 1;
-
-        if(connect[back[x][i]].size() > 0)
-            csearch(connect[x][i], carr);
-
-        if(back[back[x][i]].size() > 0)
-            bsearch(back[x][i], carr);
-    }
-}
-
-void csearch(int x, int carr) {
-    for(int i = 0;i<connect[x].size();i++) {
-        check[carr][connect[x][i]] = 1;
-
-        if(connect[connect[x][i]].size() > 0)
-            csearch(connect[x][i], carr);
-
-        if(back[connect[x][i]].size() > 0)
-            bsearch(connect[x][i], carr);
-    }
-}
-
-int main()
+void bsearch(int comp, int cur)
 {
-    int n, m;
+    for(int i = 0;i<bigger[comp].size();i++)
+    {
+        if(check[cur][bigger[comp][i]] == 0)
+        {
+            check[cur][bigger[comp][i]] = 1;
 
+            if(bigger[bigger[comp][i]].size() > 0)
+                bsearch(bigger[comp][i], cur);
+        }
+    }
+}
+
+void ssearch(int comp, int cur)
+{
+    for(int i = 0;i<smaller[comp].size();i++)
+    {
+        if(check[cur][smaller[comp][i]] == 0)
+        {
+            check[cur][smaller[comp][i]] = 1;
+
+            if(smaller[smaller[comp][i]].size() > 0)
+                ssearch(smaller[comp][i], cur);
+        }
+    }
+}
+
+int main(){
     cin >> n >> m;
 
-    connect.resize(n + 1);
-    back.resize(n + 1);
-    check.resize(n + 1, vector<int>(n + 1));
+    bigger.resize(n + 1);
+    smaller.resize(n + 1);
+    check.resize(n + 1, vector<int> (n + 1));
 
     for(int i = 0;i<m;i++)
     {
@@ -47,19 +49,22 @@ int main()
 
         cin >> a >> b;
 
-        connect[a].push_back(b);
-        back[b].push_back(a);
+        bigger[a].push_back(b);
+        smaller[b].push_back(a);
+    }
+
+    for(int i = 1;i<=n;i++)
+    {
+        if(bigger[i].size() > 0)
+            bsearch(i, i);
+
+        if(smaller[i].size() > 0)
+            ssearch(i , i);
     }
 
     for(int i = 1;i<=n;i++)
     {
         int cnt = 0;
-
-        if(connect[i].size() > 0)
-            csearch(i, i);
-
-        if(back[i].size() > 0)
-            bsearch(i , i);
 
         for(int j = 1;j<=n;j++)
         {
